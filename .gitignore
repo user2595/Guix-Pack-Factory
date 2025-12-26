@@ -1,0 +1,45 @@
+# .gitignore for Guix Pack Factory
+
+# Workspace & Outputs 
+workspace/
+!workspace/.gitkeep
+
+# Docker outputs
+*.tar.xz
+*.tar.gz
+*.tar
+*.zip
+
+# Locale 
+.env.local
+local-config.scm
+
+# Temp files
+*~
+*.swp
+*.swo
+.#*
+*#
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Editor
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts
+result
+result-*
+.guix-channel
+
+# Logs
+*.log
+build.log

@@ -1,0 +1,28 @@
+FROM registry.gitlab.com/debdistutils/guix/container:latest
+
+# Copy Guix profile files
+RUN cp -rL /gnu/store/*profile/etc/* /etc/ && \
+    echo 'root:x:0:0:root:/:/bin/sh' > /etc/passwd && \
+    echo 'root:x:0:' > /etc/group
+
+# Create Guixbuild group and user
+RUN groupadd --system guixbuild && \
+    for i in $(seq -w 1 10); do \
+        useradd -g guixbuild -G guixbuild -d /var/empty -s $(command -v nologin) -c "Guix build user $i" --system guixbuilder$i; \
+    done
+
+# Set environment variables
+ENV GUIX_PROFILE="/var/guix/profiles/per-user/root/guix-profile"
+ENV PATH="$GUIX_PROFILE/bin:$PATH"
+ENV GUILE_LOAD_PATH="$GUIX_PROFILE/share/guile/site/3.0"
+ENV GUILE_LOAD_COMPILED_PATH="$GUIX_PROFILE/lib/guile/3.0/site-ccache"
+ENV LANG=C.UTF-8
+
+# Working directory for manifests and channels
+WORKDIR /workdir
+
+# Start Guix-Daemon and authorize archives
+ENTRYPOINT ["sh", "-c", "guix-daemon --build-users-group=guixbuild & sleep 5 && \
+    guix archive --authorize < /share/guix/ci.guix.gnu.org.pub && \
+    guix archive --authorize < /share/guix/bordeaux.guix.gnu.org.pub && \
+    exec /bin/sh"]

@@ -1,0 +1,10 @@
+(specifications->manifest
+  (list "guile-next"         ; Guile mit guild
+        "guile-hoot"         ; WebAssembly Compiler
+        "bash"               ; Shell
+        "coreutils"          ; cp, mkdir, rm
+        "findutils"          ; find (optional, meist in coreutils)
+        "make"               ; Makefile-Support
+        "zip"                ; für 'make bundle'
+        "rsync"              ; für 'make publish-examples'
+        ))
