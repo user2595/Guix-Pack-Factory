@@ -34,5 +34,5 @@ This creates `workspace/guix-container-tools.tar.gz`.
 ### 5. Use the generated image
 ```bash
 docker load < workspace/guix-container-tools.tar.gz
-docker run -it <image-id> bash
+docker run -it --rm -v $(pwd)/new-workspace:/workdir <image-id> bash
 ```
